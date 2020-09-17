@@ -7,7 +7,7 @@ output:
 ## 0 Load Library
 Code for import plot library
 
-```{r echo=TRUE}
+```{r}
 # Import Library
 library(ggplot2)
 library(lattice)
@@ -19,7 +19,7 @@ library(dplyr)
 
 **1.1) Code for reading in the dataset**
 
-```{r echo=TRUE}
+```{r}
 # Set directory
 setwd("/Users/niko/Desktop/R/")
 
@@ -37,12 +37,12 @@ activity <- read.csv("./data/activity.csv")
 ```
 
 **1.2) Explore data**
-```{r echo=TRUE}
+```{r}
 # Explore with head
 head(activity)
 ```
 
-```{r echo=TRUE}
+```{r}
 # Explore data with str
 str(activity)
 ```
@@ -52,7 +52,7 @@ str(activity)
 ## 2 What is mean total number of steps taken per day?
 
 **2.1) Histogram of the total number of steps taken each day**
-```{r echo=TRUE}
+```{r}
 dayStep <- aggregate(steps ~ date, activity, sum, na.rm=TRUE)
 colnames(dayStep) <- c("Date", "Steps")
 
@@ -67,12 +67,12 @@ dayStep %>%
 ```
 
 **2.2) Mean and median number of steps taken each day**
-```{r echo=TRUE}
+```{r}
 # Mean number of steps taken each day
 mean(dayStep$Steps)
 ```
 
-```{r echo=TRUE}
+```{r}
 # Median number of steps taken each day
 median(dayStep$Steps)
 ```
@@ -81,7 +81,7 @@ median(dayStep$Steps)
 **3.1) Time series plot of the average number of steps taken**
 
 
-```{r echo=TRUE}
+```{r}
 timeStep <- aggregate(steps ~ interval, activity, mean, na.rm = TRUE)
 
 p <- ggplot(timeStep, aes(interval/100, steps))+
@@ -95,7 +95,7 @@ print(p)
 
 
 **3.2) The 5-minute interval that, on average, contains the maximum number of steps**
-```{r echo=TRUE}
+```{r}
 timeStep[which.max(timeStep$steps),]
 ```
 
@@ -107,7 +107,7 @@ I use the average step on this interval.
 
 **4.2) How many Missing Value**
 
-```{r echo=TRUE}
+```{r}
 # How many missing?
 missing = data.frame(steps = sum(is.na(activity$steps)),
                      date = sum(is.na(activity$date)),
@@ -118,7 +118,7 @@ missing
 **4.3) Impute missing data**
 
 
-```{r echo=TRUE}
+```{r}
 impute <- activity
 
 for(i in 1:dim(impute)[1]) {
@@ -129,7 +129,7 @@ for(i in 1:dim(impute)[1]) {
 
 
 **4.4) How many Missing Value after impute**
-```{r echo=TRUE}
+```{r}
 # How many missing?
 missingInpute = data.frame(steps = sum(is.na(impute$steps)),
                      date = sum(is.na(impute$date)),
@@ -140,7 +140,7 @@ missingInpute
 
 **4.5) Histogram of the total number of steps taken each day after missing values are imputed**
 
-```{r echo=TRUE}
+```{r}
 dayStepImpute <- aggregate(steps ~ date, impute, sum, na.rm=TRUE)
 colnames(dayStepImpute) <- c("Date", "Steps")
 
@@ -167,12 +167,12 @@ dayStepImpute %>%
 
 
 
-```{r echo=TRUE}
+```{r}
 # Mean number of steps taken each day after Impute Missing Data
 mean(dayStepImpute$Steps)
 ```
 
-```{r echo=TRUE}
+```{r}
 # Median number of steps taken each day after Impute Missing Data
 median(dayStepImpute$Steps)
 ```
@@ -182,7 +182,7 @@ median(dayStepImpute$Steps)
 
 **5.1 Panel plot comparing the average number of steps taken per 5-minute interval across weekdays and weekends**
 
-```{r echo=TRUE}
+```{r}
 activity$date <- as.Date(activity$date)
 activity$dayname <- weekdays(activity$date)
 activity$weekend <- 
@@ -191,7 +191,7 @@ activity$weekend <-
 ```
 
 
-```{r echo=TRUE}
+```{r}
 plotData <- aggregate(steps ~ interval + weekend, activity, mean)
 
 ggplot(plotData, aes(interval/100, steps)) +
